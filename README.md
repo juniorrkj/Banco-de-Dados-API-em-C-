@@ -5,8 +5,6 @@ Este é um sistema de controle de estoque que permite gerenciar produtos e categ
 -----
 
 ## 👤 Autoria e Instituição
-
-| Detalhe | Informação |
 | :--- | :--- |
 | **Desenvolvido por:** | **Claudiano Pinto de Oliveira Junior** |
 | **Curso/Área:** | **Estudante de Ciências da Computação** |
