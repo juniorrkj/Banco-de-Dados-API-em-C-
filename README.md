@@ -51,4 +51,4 @@ Para criar uma versão executável que não precisa do SDK instalado:
 dotnet publish -c Release --self-contained true -r win-x64
 ```
 
-O executável estará na pasta `bin/Release/net8.0/win-x64/publish`
+O executável estará na pasta `bin/Release/net8.0/win-x64/publish`# Banco-de-Dados-API-em-C-
