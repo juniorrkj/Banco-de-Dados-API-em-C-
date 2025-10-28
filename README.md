@@ -1,11 +1,3 @@
-Obrigado pela informação adicional\!
-
-Isso contextualiza perfeitamente o projeto. Vou ajustar a tabela de autoria para refletir que você é um estudante e incluir essa informação na disciplina:
-
------
-
-## 📝 Readme Aprimorado e Completo
-
 # 📦 Sistema de Controle de Estoque (Backend API)
 
 Este é um sistema de controle de estoque que permite gerenciar produtos e categorias através de uma API RESTful e de uma interface de console.
