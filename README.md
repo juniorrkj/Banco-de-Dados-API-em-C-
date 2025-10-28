@@ -1,10 +1,14 @@
-# 📦 Sistema de Controle de Estoque (Banco de Dados + API em C#)
+## 📝 Readme Aprimorado e Completo
+
+# 📦 Sistema de Controle de Estoque (Backend API)
 
 Este é um sistema de controle de estoque que permite gerenciar produtos e categorias através de uma API RESTful e de uma interface de console.
 
 -----
 
 ## 👤 Autoria e Instituição
+
+| Detalhe | Informação |
 | :--- | :--- |
 | **Desenvolvido por:** | **Claudiano Pinto de Oliveira Junior** |
 | **Curso/Área:** | **Estudante de Ciências da Computação** |
