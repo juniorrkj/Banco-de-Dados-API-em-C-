@@ -1,4 +1,4 @@
-# 📦 Sistema de Controle de Estoque (Backend API)
+# 📦 Sistema de Controle de Estoque (Banco de Dados + API em C#)
 
 Este é um sistema de controle de estoque que permite gerenciar produtos e categorias através de uma API RESTful e de uma interface de console.
 
