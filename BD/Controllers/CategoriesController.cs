@@ -113,20 +113,25 @@ public class CategoriesController : ControllerBase
     // Helper: Pegar UserId do header
     private int? GetUserIdFromHeader()
     {
-        if (Request.Headers.TryGetValue("X-User-Id", out var userIdHeader))
+        // Tentar diferentes variações do header
+        string[] headerVariations = { "X-User-Id", "x-user-id", "X-USER-ID" };
+        
+        foreach (var headerName in headerVariations)
         {
-            Console.WriteLine($"[GetUserIdFromHeader] X-User-Id encontrado: '{userIdHeader}'");
-            if (int.TryParse(userIdHeader, out int userId))
+            if (Request.Headers.TryGetValue(headerName, out var userIdHeader))
             {
-                Console.WriteLine($"[GetUserIdFromHeader] UserId parseado com sucesso: {userId}");
-                return userId;
+                Console.WriteLine($"[GetUserIdFromHeader] Header '{headerName}' encontrado: '{userIdHeader}'");
+                if (int.TryParse(userIdHeader, out int userId))
+                {
+                    Console.WriteLine($"[GetUserIdFromHeader] UserId parseado: {userId}");
+                    return userId;
+                }
+                Console.WriteLine($"[GetUserIdFromHeader] Falha ao parsear '{userIdHeader}'");
             }
-            Console.WriteLine($"[GetUserIdFromHeader] Falha ao parsear UserId");
         }
-        else
-        {
-            Console.WriteLine($"[GetUserIdFromHeader] Header X-User-Id NÃO encontrado");
-        }
+        
+        Console.WriteLine($"[GetUserIdFromHeader] Nenhum header de UserId encontrado");
+        Console.WriteLine($"[GetUserIdFromHeader] Headers disponíveis: {string.Join(", ", Request.Headers.Keys)}");
         return null;
     }
 }
