@@ -109,6 +109,23 @@ public class AuthController : ControllerBase
         });
     }
 
+    // GET: api/v1/auth/users (listar todos os usuários - apenas para debug)
+    [HttpGet("users")]
+    public async Task<ActionResult> GetAllUsers()
+    {
+        var users = await _context.Users
+            .Select(u => new
+            {
+                u.Id,
+                u.Username,
+                ProductCount = u.Products.Count,
+                CategoryCount = u.Categories.Count
+            })
+            .ToListAsync();
+
+        return Ok(users);
+    }
+
     // Helper: Hash de senha usando SHA256
     private string HashPassword(string password)
     {
