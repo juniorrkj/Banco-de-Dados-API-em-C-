@@ -47,7 +47,7 @@ public class AuthController : ControllerBase
         // Validar se usuário já existe
         if (await _context.Users.AnyAsync(u => u.Username == dto.Username))
         {
-            return BadRequest(new { error = "Usuário já existe" });
+            return BadRequest(new { error = "Esse nome de usuário já existe. Por favor, escolha outro nome." });
         }
 
         // Validações
