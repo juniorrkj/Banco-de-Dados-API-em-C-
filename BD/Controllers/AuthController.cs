@@ -109,12 +109,14 @@ public class AuthController : ControllerBase
         });
     }
 
-    // GET: api/v1/auth/admin/users?secret=SUA_SENHA_SECRETA
+    // GET: api/v1/auth/admin/users?secret=SUA_SENHA
     [HttpGet("admin/users")]
     public async Task<ActionResult> GetAllUsersAdmin([FromQuery] string secret)
     {
-        // Senha de administrador (mude para uma senha sua!)
-        if (secret != "admin2024")
+        // Senha de administrador (definida no ambiente do Render)
+        var adminSecret = Environment.GetEnvironmentVariable("ADMIN_SECRET") ?? "dev123";
+        
+        if (secret != adminSecret)
         {
             return Unauthorized(new { error = "Acesso negado" });
         }
@@ -125,11 +127,17 @@ public class AuthController : ControllerBase
                 u.Id,
                 u.Username,
                 ProductCount = u.Products.Count,
-                CategoryCount = u.Categories.Count
+                CategoryCount = u.Categories.Count,
+                CreatedAt = DateTime.Now // Só para referência
             })
+            .OrderBy(u => u.Id)
             .ToListAsync();
 
-        return Ok(users);
+        return Ok(new 
+        { 
+            total = users.Count,
+            users 
+        });
     }
 
     // Helper: Hash de senha usando SHA256
