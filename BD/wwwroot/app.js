@@ -3,6 +3,34 @@ const API_URL = window.location.hostname === 'localhost' || window.location.host
     ? 'http://localhost:8080/api/v1'
     : `${window.location.protocol}//${window.location.hostname}/api/v1`;
 
+// ============= AUTENTICAÇÃO =============
+function checkAuth() {
+    const userId = localStorage.getItem('userId');
+    const username = localStorage.getItem('username');
+    
+    if (!userId) {
+        window.location.href = '/login.html';
+        return false;
+    }
+    
+    document.getElementById('user-info').textContent = `Olá, ${username}!`;
+    return true;
+}
+
+function logout() {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('username');
+    window.location.href = '/login.html';
+}
+
+function getHeaders() {
+    const userId = localStorage.getItem('userId');
+    return {
+        'Content-Type': 'application/json',
+        'X-User-Id': userId
+    };
+}
+
 // ============= LOADING =============
 function showLoading() {
     document.getElementById('loading-overlay').classList.add('active');
@@ -71,7 +99,9 @@ function showTab(tabName) {
 async function loadProducts() {
     showLoading();
     try {
-        const response = await fetch(`${API_URL}/products`);
+        const response = await fetch(`${API_URL}/products`, {
+            headers: getHeaders()
+        });
         const products = await response.json();
         
         const tbody = document.querySelector('#products-table tbody');
@@ -103,7 +133,9 @@ async function loadProducts() {
 
 async function editProduct(id) {
     try {
-        const response = await fetch(`${API_URL}/products/${id}`);
+        const response = await fetch(`${API_URL}/products/${id}`, {
+            headers: getHeaders()
+        });
         const product = await response.json();
 
         document.getElementById('product-id').value = product.id;
@@ -124,7 +156,8 @@ async function deleteProduct(id) {
     showLoading();
     try {
         const response = await fetch(`${API_URL}/products/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: getHeaders()
         });
 
         if (response.ok) {
@@ -165,7 +198,7 @@ document.getElementById('product-form').addEventListener('submit', async (e) => 
 
         const response = await fetch(url, {
             method: method,
-            headers: { 'Content-Type': 'application/json' },
+            headers: getHeaders(),
             body: JSON.stringify(product)
         });
 
@@ -189,7 +222,9 @@ document.getElementById('product-form').addEventListener('submit', async (e) => 
 async function loadCategories() {
     showLoading();
     try {
-        const response = await fetch(`${API_URL}/categories`);
+        const response = await fetch(`${API_URL}/categories`, {
+            headers: getHeaders()
+        });
         const categories = await response.json();
         
         const tbody = document.querySelector('#categories-table tbody');
@@ -218,7 +253,9 @@ async function loadCategories() {
 
 async function editCategory(id) {
     try {
-        const response = await fetch(`${API_URL}/categories/${id}`);
+        const response = await fetch(`${API_URL}/categories/${id}`, {
+            headers: getHeaders()
+        });
         const category = await response.json();
 
         document.getElementById('category-id').value = category.id;
@@ -300,7 +337,9 @@ document.getElementById('category-form').addEventListener('submit', async (e) =>
 async function loadProductsWithCategories() {
     showLoading();
     try {
-        const response = await fetch(`${API_URL}/products/with-categories`);
+        const response = await fetch(`${API_URL}/products/with-categories`, {
+            headers: getHeaders()
+        });
         const products = await response.json();
         
         const container = document.getElementById('relations-list');
@@ -344,6 +383,9 @@ async function loadProductsWithCategories() {
 
 // Carregar produtos ao iniciar
 window.addEventListener('DOMContentLoaded', () => {
+    // Verificar autenticação
+    if (!checkAuth()) return;
+    
     loadProducts();
     
     // Formatar campo de preço

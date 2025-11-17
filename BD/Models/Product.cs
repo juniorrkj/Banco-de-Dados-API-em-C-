@@ -22,5 +22,10 @@ public class Product
     [Range(0, 999999, ErrorMessage = "Quantidade deve estar entre 0 e 999.999")]
     public int Quantity { get; set; }
     
+    // Relacionamento com User
+    [Required]
+    public int UserId { get; set; }
+    public User? User { get; set; }
+    
     public List<ProductCategory> Categories { get; set; } = new();
 }

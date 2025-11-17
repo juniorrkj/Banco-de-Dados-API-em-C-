@@ -13,5 +13,10 @@ public class Category
     [StringLength(500, ErrorMessage = "Descrição pode ter no máximo 500 caracteres")]
     public string? Description { get; set; }
     
+    // Relacionamento com User
+    [Required]
+    public int UserId { get; set; }
+    public User? User { get; set; }
+    
     public List<ProductCategory> Products { get; set; } = new();
 }

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistema de Estoque</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            background: #4caf50;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateX(400px);
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: #f44336;
+        }
+
+        .toggle-text {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .toggle-link {
+            color: #667eea;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div id="notification" class="notification"></div>
+
+    <div class="login-container">
+        <h1>📦 Sistema de Estoque</h1>
+        <p id="subtitle">Faça login para continuar</p>
+
+        <form id="auth-form">
+            <div class="form-group">
+                <label for="username">Usuário</label>
+                <input type="text" id="username" required minlength="3">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" required minlength="6">
+            </div>
+
+            <button type="submit" class="btn" id="submit-btn">Entrar</button>
+        </form>
+
+        <div class="toggle-text">
+            <span id="toggle-message">Não tem conta?</span>
+            <span class="toggle-link" onclick="toggleMode()">Criar uma</span>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:8080/api/v1'
+            : `${window.location.protocol}//${window.location.hostname}/api/v1`;
+
+        let isLoginMode = true;
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function toggleMode() {
+            isLoginMode = !isLoginMode;
+            const subtitle = document.getElementById('subtitle');
+            const submitBtn = document.getElementById('submit-btn');
+            const toggleMessage = document.getElementById('toggle-message');
+
+            if (isLoginMode) {
+                subtitle.textContent = 'Faça login para continuar';
+                submitBtn.textContent = 'Entrar';
+                toggleMessage.textContent = 'Não tem conta?';
+            } else {
+                subtitle.textContent = 'Crie sua conta';
+                submitBtn.textContent = 'Cadastrar';
+                toggleMessage.textContent = 'Já tem conta?';
+            }
+        }
+
+        document.getElementById('auth-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const endpoint = isLoginMode ? '/auth/login' : '/auth/register';
+
+            try {
+                const response = await fetch(`${API_URL}${endpoint}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Salvar userId no localStorage
+                    localStorage.setItem('userId', data.userId);
+                    localStorage.setItem('username', data.username);
+
+                    showNotification(data.message);
+                    
+                    // Redirecionar para a página principal
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 1000);
+                } else {
+                    showNotification(data.error || 'Erro na autenticação', 'error');
+                }
+            } catch (error) {
+                showNotification('Erro ao conectar com servidor', 'error');
+                console.error(error);
+            }
+        });
+
+        // Verificar se já está logado
+        window.addEventListener('DOMContentLoaded', () => {
+            const userId = localStorage.getItem('userId');
+            if (userId) {
+                window.location.href = '/';
+            }
+        });
+    </script>
+</body>
+</html>
