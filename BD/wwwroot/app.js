@@ -20,6 +20,25 @@ function formatCurrency(value) {
     });
 }
 
+function formatPriceInput(value) {
+    // Remove tudo exceto números
+    let numbers = value.replace(/\D/g, '');
+    
+    // Converte para número e divide por 100 (centavos)
+    let amount = parseFloat(numbers) / 100;
+    
+    // Formata para padrão brasileiro
+    return amount.toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+}
+
+function parseBRPrice(value) {
+    // Remove pontos de milhar e substitui vírgula por ponto
+    return parseFloat(value.replace(/\./g, '').replace(',', '.'));
+}
+
 function showNotification(message, type = 'success') {
     const notification = document.getElementById('notification');
     notification.textContent = message;
@@ -90,7 +109,7 @@ async function editProduct(id) {
         document.getElementById('product-id').value = product.id;
         document.getElementById('product-name').value = product.name;
         document.getElementById('product-description').value = product.description;
-        document.getElementById('product-price').value = product.price;
+        document.getElementById('product-price').value = formatCurrency(product.price);
         document.getElementById('product-quantity').value = product.quantity;
 
         document.querySelector('#product-form button[type="submit"]').textContent = 'Atualizar Produto';
@@ -135,7 +154,7 @@ document.getElementById('product-form').addEventListener('submit', async (e) => 
     const product = {
         name: document.getElementById('product-name').value,
         description: document.getElementById('product-description').value,
-        price: parseFloat(document.getElementById('product-price').value),
+        price: parseBRPrice(document.getElementById('product-price').value),
         quantity: parseInt(document.getElementById('product-quantity').value)
     };
 
@@ -326,6 +345,13 @@ async function loadProductsWithCategories() {
 // Carregar produtos ao iniciar
 window.addEventListener('DOMContentLoaded', () => {
     loadProducts();
+    
+    // Formatar campo de preço
+    const priceInput = document.getElementById('product-price');
+    priceInput.addEventListener('input', (e) => {
+        let value = e.target.value;
+        e.target.value = formatPriceInput(value);
+    });
 });
 
 // ============= ADICIONAR PRODUTO À CATEGORIA =============
