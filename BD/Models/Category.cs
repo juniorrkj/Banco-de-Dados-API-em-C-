@@ -6,9 +6,11 @@ public class Category
 {
     public int Id { get; set; }
     
-    [Required]
+    [Required(ErrorMessage = "Nome é obrigatório")]
+    [StringLength(120, MinimumLength = 3, ErrorMessage = "Nome deve ter entre 3 e 120 caracteres")]
     public string Name { get; set; } = "";
     
+    [StringLength(500, ErrorMessage = "Descrição pode ter no máximo 500 caracteres")]
     public string? Description { get; set; }
     
     public List<ProductCategory> Products { get; set; } = new();

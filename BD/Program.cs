@@ -52,6 +52,17 @@ public class Program
         // Porta fixa (opcional, facilita testes)
         builder.WebHost.UseUrls("http://localhost:5099");
 
+        // Configurar CORS
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll", policy =>
+            {
+                policy.AllowAnyOrigin()
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
+            });
+        });
+
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -67,6 +78,13 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        // Habilitar arquivos estáticos (HTML, CSS, JS)
+        app.UseStaticFiles();
+        app.UseDefaultFiles();
+
+        // Habilitar CORS
+        app.UseCors("AllowAll");
+
         app.MapControllers();
 
         using (var scope = app.Services.CreateScope())
@@ -76,7 +94,11 @@ public class Program
         }
 
         var webTask = app.RunAsync();
-        Console.WriteLine("API online em http://localhost:5099 (Swagger em /swagger)");
+        Console.WriteLine("===================================");
+        Console.WriteLine("API online em http://localhost:5099");
+        Console.WriteLine("Swagger: http://localhost:5099/swagger");
+        Console.WriteLine("Interface Web (GUI): http://localhost:5099");
+        Console.WriteLine("===================================");
 
         // If WEBONLY=1 is set in the environment, skip the interactive console loop
         if (Environment.GetEnvironmentVariable("WEBONLY") == "1")
