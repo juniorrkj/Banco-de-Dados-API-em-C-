@@ -85,6 +85,9 @@ public class Program
         app.UseDefaultFiles();
         app.UseStaticFiles();
 
+        // Health check endpoint para Railway
+        app.MapGet("/health", () => Results.Ok(new { status = "healthy", timestamp = DateTime.UtcNow }));
+
         app.MapControllers();
 
         using (var scope = app.Services.CreateScope())
