@@ -28,11 +28,21 @@ function logout() {
 
 function getHeaders() {
     const userId = localStorage.getItem('userId');
-    console.log('getHeaders - UserId:', userId);
-    return {
+    console.log('getHeaders - UserId do localStorage:', userId);
+    console.log('getHeaders - Tipo:', typeof userId);
+    
+    if (!userId) {
+        console.error('ERRO: userId não encontrado no localStorage!');
+        window.location.href = '/auth.html';
+        return { 'Content-Type': 'application/json' };
+    }
+    
+    const headers = {
         'Content-Type': 'application/json',
-        'X-User-Id': userId
+        'X-User-Id': String(userId)
     };
+    console.log('getHeaders - Headers sendo enviados:', headers);
+    return headers;
 }
 
 // ============= LOADING =============
