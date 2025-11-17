@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Controle de Estoque</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div style="background: #ff9800; color: white; padding: 15px; text-align: center; margin-bottom: 20px; border-radius: 10px;">
+            <strong>⚠️ ATENÇÃO:</strong> Esta é apenas a interface (frontend). Para funcionar completamente, você precisa executar a API localmente:<br>
+            <code style="background: rgba(0,0,0,0.2); padding: 5px 10px; border-radius: 5px; display: inline-block; margin-top: 5px;">dotnet run --project BD/EstoqueDB.csproj</code><br>
+            <small>A API deve estar rodando em http://localhost:5099</small>
+        </div>
+        
+        <header>
+            <h1>📦 Sistema de Controle de Estoque</h1>
+            <p>Gerenciamento de Produtos e Categorias</p>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-btn active" onclick="showTab('products')">Produtos</button>
+            <button class="tab-btn" onclick="showTab('categories')">Categorias</button>
+            <button class="tab-btn" onclick="showTab('relations')">Produtos com Categorias</button>
+        </nav>
+
+        <!-- TAB: PRODUTOS -->
+        <div id="products-tab" class="tab-content active">
+            <section class="form-section">
+                <h2>Cadastrar/Editar Produto</h2>
+                <form id="product-form">
+                    <input type="hidden" id="product-id">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="product-name">Nome *</label>
+                            <input type="text" id="product-name" required minlength="3" maxlength="120">
+                        </div>
+                        <div class="form-group">
+                            <label for="product-price">Preço (R$) *</label>
+                            <input type="number" id="product-price" step="0.01" min="0.01" max="999999.99" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="product-quantity">Quantidade *</label>
+                            <input type="number" id="product-quantity" min="0" max="999999" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="product-description">Descrição *</label>
+                            <input type="text" id="product-description" required minlength="5" maxlength="500">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Salvar Produto</button>
+                        <button type="button" class="btn btn-secondary" onclick="clearProductForm()">Limpar</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="table-section">
+                <h2>Lista de Produtos</h2>
+                <button class="btn btn-primary" onclick="loadProducts()">🔄 Atualizar</button>
+                <table id="products-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                            <th>Preço</th>
+                            <th>Quantidade</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+        </div>
+
+        <!-- TAB: CATEGORIAS -->
+        <div id="categories-tab" class="tab-content">
+            <section class="form-section">
+                <h2>Cadastrar/Editar Categoria</h2>
+                <form id="category-form">
+                    <input type="hidden" id="category-id">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category-name">Nome *</label>
+                            <input type="text" id="category-name" required minlength="3" maxlength="120">
+                        </div>
+                        <div class="form-group">
+                            <label for="category-description">Descrição</label>
+                            <input type="text" id="category-description" maxlength="500">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Salvar Categoria</button>
+                        <button type="button" class="btn btn-secondary" onclick="clearCategoryForm()">Limpar</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="table-section">
+                <h2>Lista de Categorias</h2>
+                <button class="btn btn-primary" onclick="loadCategories()">🔄 Atualizar</button>
+                <table id="categories-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+        </div>
+
+        <!-- TAB: RELAÇÕES (INNER JOIN) -->
+        <div id="relations-tab" class="tab-content">
+            <section class="table-section">
+                <h2>Produtos com suas Categorias (INNER JOIN)</h2>
+                <button class="btn btn-primary" onclick="loadProductsWithCategories()">🔄 Atualizar</button>
+                <div id="relations-list"></div>
+            </section>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
