@@ -1,4 +1,7 @@
-const API_URL = 'https://sistema-estoque-api-web-production.up.railway.app/api/v1';
+// Use a URL da API do Railway se estiver em produção, senão usa localhost
+const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5099/api/v1'
+    : 'https://sistema-estoque-api-web-production.up.railway.app/api/v1';
 
 // ============= UTILIDADES =============
 function formatCurrency(value) {
