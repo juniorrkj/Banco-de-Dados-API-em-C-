@@ -47,13 +47,15 @@ public class Program
             }
             return;
         }
+    
+    // IMPORTANTE: Configurar ambiente antes de criar o builder
+    var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+    Environment.SetEnvironmentVariable("ASPNETCORE_URLS", $"http://0.0.0.0:{port}");
+    
     var builder = WebApplication.CreateBuilder(args ?? Array.Empty<string>());
 
-        // Configurar porta (Railway usa PORT env var, localmente usa 5099)
-        var port = Environment.GetEnvironmentVariable("PORT") ?? "5099";
-        Console.WriteLine($"[DEBUG] PORT configurada: {port}");
-        builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
-        Console.WriteLine($"[DEBUG] UseUrls configurado: http://0.0.0.0:{port}");
+    Console.WriteLine($"[RAILWAY] Porta configurada: {port}");
+    Console.WriteLine($"[RAILWAY] ASPNETCORE_URLS: {Environment.GetEnvironmentVariable("ASPNETCORE_URLS")}");
 
         // Configurar CORS
         builder.Services.AddCors(options =>
