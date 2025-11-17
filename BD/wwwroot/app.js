@@ -274,7 +274,8 @@ async function deleteCategory(id) {
     showLoading();
     try {
         const response = await fetch(`${API_URL}/categories/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: getHeaders()
         });
 
         if (response.ok) {
@@ -313,7 +314,7 @@ document.getElementById('category-form').addEventListener('submit', async (e) =>
 
         const response = await fetch(url, {
             method: method,
-            headers: { 'Content-Type': 'application/json' },
+            headers: getHeaders(),
             body: JSON.stringify(category)
         });
 
