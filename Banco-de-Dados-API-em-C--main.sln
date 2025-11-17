@@ -1,0 +1,30 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EstoqueDB", "BD\EstoqueDB.csproj", "{47EDDCA3-C72D-11AE-C122-44AB61C13997}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BancosRelacionais", "Bancos Relacionais\BancosRelacionais.csproj", "{19D1BED9-3FBF-1FA1-918D-9262500B0B5B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{47EDDCA3-C72D-11AE-C122-44AB61C13997}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47EDDCA3-C72D-11AE-C122-44AB61C13997}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47EDDCA3-C72D-11AE-C122-44AB61C13997}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47EDDCA3-C72D-11AE-C122-44AB61C13997}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19D1BED9-3FBF-1FA1-918D-9262500B0B5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19D1BED9-3FBF-1FA1-918D-9262500B0B5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19D1BED9-3FBF-1FA1-918D-9262500B0B5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19D1BED9-3FBF-1FA1-918D-9262500B0B5B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {310C9F4F-739B-4A09-A365-8892C49A2E8F}
+	EndGlobalSection
+EndGlobal
