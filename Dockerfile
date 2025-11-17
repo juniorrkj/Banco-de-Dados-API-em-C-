@@ -16,10 +16,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app/BD/out .
 
-# Expose port
-EXPOSE 8080
-
-# Set environment to use port from Railway
-ENV ASPNETCORE_URLS=http://+:8080
+# Railway fornece a variável PORT
+ENV ASPNETCORE_URLS=http://+:${PORT}
 
 ENTRYPOINT ["dotnet", "EstoqueDB.dll"]
