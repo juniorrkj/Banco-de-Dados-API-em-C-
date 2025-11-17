@@ -1,6 +1,13 @@
 const API_URL = 'http://localhost:5099/api/v1';
 
 // ============= UTILIDADES =============
+function formatCurrency(value) {
+    return value.toLocaleString('pt-BR', { 
+        minimumFractionDigits: 2, 
+        maximumFractionDigits: 2 
+    });
+}
+
 function showNotification(message, type = 'success') {
     const notification = document.getElementById('notification');
     notification.textContent = message;
@@ -44,7 +51,7 @@ async function loadProducts() {
                 <td>${product.id}</td>
                 <td>${product.name}</td>
                 <td>${product.description}</td>
-                <td>R$ ${product.price.toFixed(2)}</td>
+                <td>R$ ${formatCurrency(product.price)}</td>
                 <td>${product.quantity}</td>
                 <td>
                     <button class="btn btn-edit" onclick="editProduct(${product.id})">✏️ Editar</button>
@@ -265,7 +272,7 @@ async function loadProductsWithCategories() {
                 <h3>📦 ${product.name}</h3>
                 <div class="product-info">
                     <div><strong>ID:</strong> ${product.id}</div>
-                    <div><strong>Preço:</strong> R$ ${product.price.toFixed(2)}</div>
+                    <div><strong>Preço:</strong> R$ ${formatCurrency(product.price)}</div>
                     <div><strong>Quantidade:</strong> ${product.quantity}</div>
                 </div>
                 <div><strong>Descrição:</strong> ${product.description}</div>

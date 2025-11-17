@@ -78,12 +78,13 @@ public class Program
             app.UseSwaggerUI();
         }
 
-        // Habilitar arquivos estáticos (HTML, CSS, JS)
-        app.UseStaticFiles();
-        app.UseDefaultFiles();
-
         // Habilitar CORS
         app.UseCors("AllowAll");
+
+        // Habilitar arquivos estáticos (HTML, CSS, JS)
+        // UseDefaultFiles PRECISA vir ANTES de UseStaticFiles
+        app.UseDefaultFiles();
+        app.UseStaticFiles();
 
         app.MapControllers();
 
