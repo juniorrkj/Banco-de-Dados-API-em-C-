@@ -59,6 +59,7 @@ async function loadProducts() {
                 <td>
                     <button class="btn btn-edit" onclick="editProduct(${product.id})">✏️ Editar</button>
                     <button class="btn btn-delete" onclick="deleteProduct(${product.id})">🗑️ Deletar</button>
+                    <button class="btn btn-primary" onclick="showAddCategoryModal(${product.id}, '${product.name}')">🏷️ Categoria</button>
                 </td>
             `;
             tbody.appendChild(tr);
@@ -296,3 +297,73 @@ async function loadProductsWithCategories() {
 window.addEventListener('DOMContentLoaded', () => {
     loadProducts();
 });
+
+// ============= ADICIONAR PRODUTO À CATEGORIA =============
+async function showAddCategoryModal(productId, productName) {
+    try {
+        const response = await fetch(`${API_URL}/categories`);
+        const categories = await response.json();
+
+        if (categories.length === 0) {
+            showNotification('Nenhuma categoria cadastrada. Crie uma categoria primeiro!', 'error');
+            return;
+        }
+
+        const categoryOptions = categories.map(cat => 
+            `<option value="${cat.id}">${cat.name}</option>`
+        ).join('');
+
+        const modalHtml = `
+            <div id="category-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
+                <div style="background: white; padding: 30px; border-radius: 12px; max-width: 400px; width: 90%;">
+                    <h3 style="margin-top: 0;">Adicionar ${productName} à Categoria</h3>
+                    <select id="category-select" style="width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ddd; border-radius: 6px; font-size: 16px;">
+                        <option value="">Selecione uma categoria</option>
+                        ${categoryOptions}
+                    </select>
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button class="btn btn-primary" onclick="addProductToCategory(${productId})" style="flex: 1;">Adicionar</button>
+                        <button class="btn btn-secondary" onclick="closeModal()" style="flex: 1;">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+    } catch (error) {
+        showNotification('Erro ao carregar categorias', 'error');
+    }
+}
+
+async function addProductToCategory(productId) {
+    const categoryId = document.getElementById('category-select').value;
+    
+    if (!categoryId) {
+        showNotification('Selecione uma categoria!', 'error');
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/products/${productId}/categories/${categoryId}`, {
+            method: 'POST'
+        });
+
+        if (response.ok) {
+            showNotification('Produto adicionado à categoria com sucesso!');
+            closeModal();
+            loadProducts();
+            loadProductsWithCategories();
+        } else {
+            const error = await response.json();
+            showNotification(error.error || 'Erro ao adicionar à categoria', 'error');
+        }
+    } catch (error) {
+        showNotification('Erro ao adicionar à categoria', 'error');
+        console.error(error);
+    }
+}
+
+function closeModal() {
+    const modal = document.getElementById('category-modal');
+    if (modal) modal.remove();
+}

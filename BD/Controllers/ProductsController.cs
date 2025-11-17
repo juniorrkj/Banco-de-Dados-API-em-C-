@@ -97,4 +97,48 @@ public class ProductsController : ControllerBase{
         await _db.SaveChangesAsync();
         return NoContent();
     }
+
+    // POST /api/v1/products/1/categories/2 - Adiciona produto à categoria
+    [HttpPost("{productId:int}/categories/{categoryId:int}")]
+    public async Task<IActionResult> AddToCategory(int productId, int categoryId)
+    {
+        var product = await _db.Products.FindAsync(productId);
+        if (product is null)
+            return NotFound(new { error = "Produto não encontrado" });
+
+        var category = await _db.Categories.FindAsync(categoryId);
+        if (category is null)
+            return NotFound(new { error = "Categoria não encontrada" });
+
+        // Verifica se já existe o relacionamento
+        var exists = await _db.ProductCategories
+            .AnyAsync(pc => pc.ProductId == productId && pc.CategoryId == categoryId);
+        
+        if (exists)
+            return Conflict(new { error = "Produto já está vinculado a esta categoria" });
+
+        _db.ProductCategories.Add(new ProductCategory 
+        { 
+            ProductId = productId, 
+            CategoryId = categoryId 
+        });
+        
+        await _db.SaveChangesAsync();
+        return Ok(new { message = "Produto adicionado à categoria com sucesso" });
+    }
+
+    // DELETE /api/v1/products/1/categories/2 - Remove produto da categoria
+    [HttpDelete("{productId:int}/categories/{categoryId:int}")]
+    public async Task<IActionResult> RemoveFromCategory(int productId, int categoryId)
+    {
+        var relation = await _db.ProductCategories
+            .FirstOrDefaultAsync(pc => pc.ProductId == productId && pc.CategoryId == categoryId);
+        
+        if (relation is null)
+            return NotFound(new { error = "Relacionamento não encontrado" });
+
+        _db.ProductCategories.Remove(relation);
+        await _db.SaveChangesAsync();
+        return NoContent();
+    }
 }
