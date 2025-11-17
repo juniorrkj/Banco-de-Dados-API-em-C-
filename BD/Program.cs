@@ -51,7 +51,9 @@ public class Program
 
         // Configurar porta (Railway usa PORT env var, localmente usa 5099)
         var port = Environment.GetEnvironmentVariable("PORT") ?? "5099";
+        Console.WriteLine($"[DEBUG] PORT configurada: {port}");
         builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+        Console.WriteLine($"[DEBUG] UseUrls configurado: http://0.0.0.0:{port}");
 
         // Configurar CORS
         builder.Services.AddCors(options =>
