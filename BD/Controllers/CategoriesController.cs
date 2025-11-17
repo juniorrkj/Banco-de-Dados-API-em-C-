@@ -17,6 +17,9 @@ public class CategoriesController : ControllerBase
     public async Task<ActionResult<IEnumerable<Category>>> GetAll()
     {
         var userId = GetUserIdFromHeader();
+        Console.WriteLine($"[Categories GET] UserId recebido: {userId}");
+        Console.WriteLine($"[Categories GET] Headers: {string.Join(", ", Request.Headers.Select(h => $"{h.Key}={h.Value}"))}");
+        
         if (userId == null) return Unauthorized(new { error = "Usuário não autenticado" });
 
         return Ok(await _db.Categories
@@ -112,10 +115,17 @@ public class CategoriesController : ControllerBase
     {
         if (Request.Headers.TryGetValue("X-User-Id", out var userIdHeader))
         {
+            Console.WriteLine($"[GetUserIdFromHeader] X-User-Id encontrado: '{userIdHeader}'");
             if (int.TryParse(userIdHeader, out int userId))
             {
+                Console.WriteLine($"[GetUserIdFromHeader] UserId parseado com sucesso: {userId}");
                 return userId;
             }
+            Console.WriteLine($"[GetUserIdFromHeader] Falha ao parsear UserId");
+        }
+        else
+        {
+            Console.WriteLine($"[GetUserIdFromHeader] Header X-User-Id NÃO encontrado");
         }
         return null;
     }
