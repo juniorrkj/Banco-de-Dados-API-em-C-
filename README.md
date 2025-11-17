@@ -121,34 +121,6 @@ BD/
 
 ---
 
-## 🔐 Endpoints da API
-
-### Autenticação
-- `POST /api/v1/auth/register` - Criar nova conta
-- `POST /api/v1/auth/login` - Fazer login
-- `GET /api/v1/auth/admin/users?secret=SENHA` - Listar usuários (admin)
-
-### Produtos
-- `GET /api/v1/products` - Listar produtos do usuário
-- `GET /api/v1/products/{id}` - Buscar produto específico
-- `POST /api/v1/products` - Criar produto
-- `PUT /api/v1/products/{id}` - Atualizar produto
-- `DELETE /api/v1/products/{id}` - Deletar produto
-- `GET /api/v1/products/with-categories` - Produtos com suas categorias (INNER JOIN)
-
-### Categorias
-- `GET /api/v1/categories` - Listar categorias do usuário
-- `GET /api/v1/categories/{id}` - Buscar categoria específica
-- `POST /api/v1/categories` - Criar categoria
-- `PUT /api/v1/categories/{id}` - Atualizar categoria
-- `DELETE /api/v1/categories/{id}` - Deletar categoria
-
-### Relacionamentos
-- `POST /api/v1/products/{productId}/categories/{categoryId}` - Vincular produto a categoria
-- `DELETE /api/v1/products/{productId}/categories/{categoryId}` - Desvincular
-
----
-
 ## 🚀 Como Usar
 
 ### Online (Recomendado)
