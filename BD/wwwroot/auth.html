@@ -249,11 +249,14 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    localStorage.setItem('userId', data.userId);
+                    console.log('Login bem-sucedido:', data);
+                    localStorage.setItem('userId', String(data.userId));
                     localStorage.setItem('username', data.username);
+                    console.log('UserId salvo no localStorage:', localStorage.getItem('userId'));
                     showNotification('Login realizado com sucesso!');
                     setTimeout(() => window.location.href = '/', 1000);
                 } else {
+                    console.error('Erro no login:', data);
                     showNotification(data.error || 'Erro ao fazer login', 'error');
                 }
             } catch (error) {
@@ -284,11 +287,14 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    localStorage.setItem('userId', data.userId);
+                    console.log('Registro bem-sucedido:', data);
+                    localStorage.setItem('userId', String(data.userId));
                     localStorage.setItem('username', data.username);
+                    console.log('UserId salvo no localStorage:', localStorage.getItem('userId'));
                     showNotification('Conta criada com sucesso!');
                     setTimeout(() => window.location.href = '/', 1000);
                 } else {
+                    console.error('Erro no registro:', data);
                     showNotification(data.error || 'Erro ao criar conta', 'error');
                 }
             } catch (error) {

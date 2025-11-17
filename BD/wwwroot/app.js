@@ -8,6 +8,9 @@ function checkAuth() {
     const userId = localStorage.getItem('userId');
     const username = localStorage.getItem('username');
     
+    console.log('CheckAuth - UserId:', userId);
+    console.log('CheckAuth - Username:', username);
+    
     if (!userId) {
         window.location.href = '/auth.html';
         return false;
@@ -25,6 +28,7 @@ function logout() {
 
 function getHeaders() {
     const userId = localStorage.getItem('userId');
+    console.log('getHeaders - UserId:', userId);
     return {
         'Content-Type': 'application/json',
         'X-User-Id': userId
