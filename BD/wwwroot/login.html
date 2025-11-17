@@ -113,16 +113,27 @@
             background: #f44336;
         }
 
-        .toggle-text {
-            text-align: center;
-            margin-top: 20px;
-            color: #666;
+        .tab-button {
+            flex: 1;
+            padding: 12px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
-        .toggle-link {
-            color: #667eea;
-            cursor: pointer;
-            text-decoration: underline;
+        .tab-button:hover {
+            border-color: #667eea;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
         }
     </style>
 </head>
@@ -131,34 +142,49 @@
 
     <div class="login-container">
         <h1>📦 Sistema de Estoque</h1>
-        <p id="subtitle">Faça login para continuar</p>
+        <p id="subtitle">Bem-vindo!</p>
 
-        <form id="auth-form">
+        <!-- Abas -->
+        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+            <button class="tab-button active" id="login-tab-btn" onclick="switchTab('login')">Login</button>
+            <button class="tab-button" id="register-tab-btn" onclick="switchTab('register')">Criar Conta</button>
+        </div>
+
+        <!-- Formulário de Login -->
+        <form id="login-form" style="display: block;">
             <div class="form-group">
-                <label for="username">Usuário</label>
-                <input type="text" id="username" required minlength="3">
+                <label for="login-username">Usuário</label>
+                <input type="text" id="login-username" required minlength="3">
             </div>
 
             <div class="form-group">
-                <label for="password">Senha</label>
-                <input type="password" id="password" required minlength="6">
+                <label for="login-password">Senha</label>
+                <input type="password" id="login-password" required minlength="6">
             </div>
 
-            <button type="submit" class="btn" id="submit-btn">Entrar</button>
+            <button type="submit" class="btn">Entrar</button>
         </form>
 
-        <div class="toggle-text">
-            <span id="toggle-message">Não tem conta?</span>
-            <span class="toggle-link" id="toggle-link" onclick="toggleMode()">Criar uma</span>
-        </div>
+        <!-- Formulário de Registro -->
+        <form id="register-form" style="display: none;">
+            <div class="form-group">
+                <label for="register-username">Usuário</label>
+                <input type="text" id="register-username" required minlength="3">
+            </div>
+
+            <div class="form-group">
+                <label for="register-password">Senha</label>
+                <input type="password" id="register-password" required minlength="6">
+            </div>
+
+            <button type="submit" class="btn">Cadastrar</button>
+        </form>
     </div>
 
     <script>
         const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
             ? 'http://localhost:8080/api/v1'
             : `${window.location.protocol}//${window.location.hostname}/api/v1`;
-
-        let isLoginMode = true;
 
         function showNotification(message, type = 'success') {
             const notification = document.getElementById('notification');
@@ -169,36 +195,33 @@
             }, 3000);
         }
 
-        function toggleMode() {
-            isLoginMode = !isLoginMode;
-            const subtitle = document.getElementById('subtitle');
-            const submitBtn = document.getElementById('submit-btn');
-            const toggleMessage = document.getElementById('toggle-message');
-            const toggleLink = document.getElementById('toggle-link');
-
-            if (isLoginMode) {
-                subtitle.textContent = 'Faça login para continuar';
-                submitBtn.textContent = 'Entrar';
-                toggleMessage.textContent = 'Não tem conta?';
-                toggleLink.textContent = 'Criar uma';
+        function switchTab(tab) {
+            // Atualizar botões das abas
+            document.getElementById('login-tab-btn').classList.remove('active');
+            document.getElementById('register-tab-btn').classList.remove('active');
+            
+            if (tab === 'login') {
+                document.getElementById('login-tab-btn').classList.add('active');
+                document.getElementById('login-form').style.display = 'block';
+                document.getElementById('register-form').style.display = 'none';
+                document.getElementById('subtitle').textContent = 'Bem-vindo de volta!';
             } else {
-                subtitle.textContent = 'Crie sua conta';
-                submitBtn.textContent = 'Cadastrar';
-                toggleMessage.textContent = 'Já tem conta?';
-                toggleLink.textContent = 'Fazer login';
+                document.getElementById('register-tab-btn').classList.add('active');
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('register-form').style.display = 'block';
+                document.getElementById('subtitle').textContent = 'Crie sua conta grátis';
             }
         }
 
-        document.getElementById('auth-form').addEventListener('submit', async (e) => {
+        // Login Form
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            const endpoint = isLoginMode ? '/auth/login' : '/auth/register';
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
 
             try {
-                const response = await fetch(`${API_URL}${endpoint}`, {
+                const response = await fetch(`${API_URL}/auth/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password })
@@ -207,18 +230,42 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    // Salvar userId no localStorage
                     localStorage.setItem('userId', data.userId);
                     localStorage.setItem('username', data.username);
-
                     showNotification(data.message);
-                    
-                    // Redirecionar para a página principal
-                    setTimeout(() => {
-                        window.location.href = '/';
-                    }, 1000);
+                    setTimeout(() => window.location.href = '/', 1000);
                 } else {
-                    showNotification(data.error || 'Erro na autenticação', 'error');
+                    showNotification(data.error || 'Erro ao fazer login', 'error');
+                }
+            } catch (error) {
+                showNotification('Erro ao conectar com servidor', 'error');
+                console.error(error);
+            }
+        });
+
+        // Register Form
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+
+            try {
+                const response = await fetch(`${API_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('userId', data.userId);
+                    localStorage.setItem('username', data.username);
+                    showNotification(data.message);
+                    setTimeout(() => window.location.href = '/', 1000);
+                } else {
+                    showNotification(data.error || 'Erro ao criar conta', 'error');
                 }
             } catch (error) {
                 showNotification('Erro ao conectar com servidor', 'error');
