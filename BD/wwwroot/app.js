@@ -3,6 +3,15 @@ const API_URL = window.location.hostname === 'localhost' || window.location.host
     ? 'http://localhost:8080/api/v1'
     : `${window.location.protocol}//${window.location.hostname}/api/v1`;
 
+// ============= LOADING =============
+function showLoading() {
+    document.getElementById('loading-overlay').classList.add('active');
+}
+
+function hideLoading() {
+    document.getElementById('loading-overlay').classList.remove('active');
+}
+
 // ============= UTILIDADES =============
 function formatCurrency(value) {
     return value.toLocaleString('pt-BR', { 
@@ -41,6 +50,7 @@ function showTab(tabName) {
 
 // ============= PRODUTOS =============
 async function loadProducts() {
+    showLoading();
     try {
         const response = await fetch(`${API_URL}/products`);
         const products = await response.json();
@@ -67,6 +77,8 @@ async function loadProducts() {
     } catch (error) {
         showNotification('Erro ao carregar produtos', 'error');
         console.error(error);
+    } finally {
+        hideLoading();
     }
 }
 
@@ -90,6 +102,7 @@ async function editProduct(id) {
 async function deleteProduct(id) {
     if (!confirm('Tem certeza que deseja deletar este produto?')) return;
 
+    showLoading();
     try {
         const response = await fetch(`${API_URL}/products/${id}`, {
             method: 'DELETE'
@@ -104,6 +117,8 @@ async function deleteProduct(id) {
         }
     } catch (error) {
         showNotification('Erro ao deletar produto', 'error');
+    } finally {
+        hideLoading();
     }
 }
 
@@ -124,6 +139,7 @@ document.getElementById('product-form').addEventListener('submit', async (e) => 
         quantity: parseInt(document.getElementById('product-quantity').value)
     };
 
+    showLoading();
     try {
         const url = id ? `${API_URL}/products/${id}` : `${API_URL}/products`;
         const method = id ? 'PUT' : 'POST';
@@ -145,11 +161,14 @@ document.getElementById('product-form').addEventListener('submit', async (e) => 
     } catch (error) {
         showNotification('Erro ao salvar produto', 'error');
         console.error(error);
+    } finally {
+        hideLoading();
     }
 });
 
 // ============= CATEGORIAS =============
 async function loadCategories() {
+    showLoading();
     try {
         const response = await fetch(`${API_URL}/categories`);
         const categories = await response.json();
@@ -173,6 +192,8 @@ async function loadCategories() {
     } catch (error) {
         showNotification('Erro ao carregar categorias', 'error');
         console.error(error);
+    } finally {
+        hideLoading();
     }
 }
 
@@ -194,6 +215,7 @@ async function editCategory(id) {
 async function deleteCategory(id) {
     if (!confirm('Tem certeza que deseja deletar esta categoria?')) return;
 
+    showLoading();
     try {
         const response = await fetch(`${API_URL}/categories/${id}`, {
             method: 'DELETE'
@@ -208,6 +230,8 @@ async function deleteCategory(id) {
         }
     } catch (error) {
         showNotification('Erro ao deletar categoria', 'error');
+    } finally {
+        hideLoading();
     }
 }
 
@@ -226,6 +250,7 @@ document.getElementById('category-form').addEventListener('submit', async (e) =>
         description: document.getElementById('category-description').value
     };
 
+    showLoading();
     try {
         const url = id ? `${API_URL}/categories/${id}` : `${API_URL}/categories`;
         const method = id ? 'PUT' : 'POST';
@@ -247,11 +272,14 @@ document.getElementById('category-form').addEventListener('submit', async (e) =>
     } catch (error) {
         showNotification('Erro ao salvar categoria', 'error');
         console.error(error);
+    } finally {
+        hideLoading();
     }
 });
 
 // ============= RELAÇÕES (INNER JOIN) =============
 async function loadProductsWithCategories() {
+    showLoading();
     try {
         const response = await fetch(`${API_URL}/products/with-categories`);
         const products = await response.json();
@@ -290,6 +318,8 @@ async function loadProductsWithCategories() {
     } catch (error) {
         showNotification('Erro ao carregar relações', 'error');
         console.error(error);
+    } finally {
+        hideLoading();
     }
 }
 
@@ -343,6 +373,7 @@ async function addProductToCategory(productId) {
         return;
     }
 
+    showLoading();
     try {
         const response = await fetch(`${API_URL}/products/${productId}/categories/${categoryId}`, {
             method: 'POST'
@@ -360,6 +391,8 @@ async function addProductToCategory(productId) {
     } catch (error) {
         showNotification('Erro ao adicionar à categoria', 'error');
         console.error(error);
+    } finally {
+        hideLoading();
     }
 }
 
