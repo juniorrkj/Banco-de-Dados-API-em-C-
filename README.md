@@ -72,34 +72,35 @@ O sistema possui 2 entidades principais com relacionamento N:N:
 
 -----
 
-## 🚀 Como Executar o Projeto
+## � Como Executar Localmente
 
-### Pré-requisitos:
-- **.NET SDK 8.0** instalado ([Download](https://dotnet.microsoft.com/download))
-- Navegador web moderno (Chrome, Firefox, Edge)
+### Pré-requisitos
+- [.NET 8.0 SDK](https://dotnet.microsoft.com/download)
 
-### Passos:
+### Instalação e Execução
 
-1. **Clone o repositório:**
 ```bash
-git clone https://github.com/juniorrkj/Banco-de-Dados-API-em-C-.git
-cd Banco-de-Dados-API-em-C--main
-```
+# Clone o repositório
+git clone https://github.com/juniorrkj/Sistema-Estoque-API-Web.git
+cd Sistema-Estoque-API-Web
 
-2. **Compile o projeto:**
-```bash
-dotnet build BD/EstoqueDB.csproj
-```
-
-3. **Execute o sistema:**
-```bash
+# Execute a aplicação
 dotnet run --project BD/EstoqueDB.csproj
+
+# A aplicação estará disponível em:
+# - Interface: http://localhost:8080
+# - Swagger: http://localhost:8080/swagger
 ```
 
-4. **Acesse a aplicação:**
-   - **Interface Web (GUI):** http://localhost:5099
-   - **Documentação Swagger:** http://localhost:5099/swagger
-   - **API Base URL:** http://localhost:5099/api/v1
+---
+
+## 🌐 Deploy
+
+Aplicação hospedada gratuitamente no **Render.com**:
+- **URL**: https://sistema-estoque-api-web.onrender.com
+- **Status**: ✅ Online e funcional
+
+---
 
 -----
 
