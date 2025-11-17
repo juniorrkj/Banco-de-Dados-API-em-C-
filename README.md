@@ -2,7 +2,21 @@
 
 # 📦 Sistema de Controle de Estoque (Backend API + Frontend)
 
-Este é um sistema completo de controle de estoque que permite gerenciar produtos e categorias através de uma **API RESTful** e de uma **interface web moderna**. O sistema demonstra a integração completa entre frontend e backend, com relacionamento de dados e validações robustas.
+Sistema completo de gerenciamento de estoque com **API REST** em C# (.NET 8.0) e **interface web moderna**, totalmente funcional e hospedado na nuvem.
+
+## 🌐 Acesse o Projeto Online
+
+<div align="center">
+
+### 🚀 **[ACESSAR APLICAÇÃO](https://sistema-estoque-api-web.onrender.com)** 🚀
+
+### 📚 **[DOCUMENTAÇÃO DA API (Swagger)](https://sistema-estoque-api-web.onrender.com/swagger)** 📚
+
+</div>
+
+**Status**: ✅ Online e funcional  
+**Deploy**: Render.com  
+**Hospedagem**: Gratuita com auto-deploy do GitHub
 
 -----
 
@@ -18,9 +32,29 @@ Este é um sistema completo de controle de estoque que permite gerenciar produto
 
 -----
 
-## 🛠️ Tecnologias e Arquitetura
+## ✨ Funcionalidades Principais
 
-Este projeto foi desenvolvido utilizando as seguintes tecnologias e arquitetura:
+### 🌐 Interface Web (Acesse Online)
+- ✅ **3 abas interativas**: Produtos, Categorias e Relacionamentos
+- ✅ **CRUD completo** via interface gráfica moderna
+- ✅ **Responsiva**: funciona em desktop, tablet e mobile
+- ✅ **Formatação brasileira**: valores em R$ (Real)
+- ✅ **Validações em tempo real** nos formulários
+- ✅ **Notificações visuais** de sucesso e erro
+- ✅ **Modal intuitivo** para vincular produtos a categorias
+
+### 🔌 API REST
+- ✅ **Endpoints RESTful** para Produtos e Categorias
+- ✅ **Relacionamento N:N** totalmente funcional
+- ✅ **INNER JOIN** endpoint (produtos com categorias)
+- ✅ **Validações robustas** com DataAnnotations
+- ✅ **Documentação automática** com Swagger
+- ✅ **CORS habilitado** para integração frontend
+- ✅ **Health Check** endpoint
+
+-----
+
+## 🛠️ Tecnologias Utilizadas
 
   * **Backend:**
     * **Linguagem:** C#
