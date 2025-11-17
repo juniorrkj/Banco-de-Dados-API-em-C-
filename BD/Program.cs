@@ -49,8 +49,9 @@ public class Program
         }
     var builder = WebApplication.CreateBuilder(args ?? Array.Empty<string>());
 
-        // Porta fixa (opcional, facilita testes)
-        builder.WebHost.UseUrls("http://localhost:5099");
+        // Configurar porta (Railway usa PORT env var, localmente usa 5099)
+        var port = Environment.GetEnvironmentVariable("PORT") ?? "5099";
+        builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
         // Configurar CORS
         builder.Services.AddCors(options =>
