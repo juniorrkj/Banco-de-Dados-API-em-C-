@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5099/api/v1';
+const API_URL = 'https://sistema-estoque-api-web-production.up.railway.app/api/v1';
 
 // ============= UTILIDADES =============
 function formatCurrency(value) {
