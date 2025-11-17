@@ -9,7 +9,7 @@ function checkAuth() {
     const username = localStorage.getItem('username');
     
     if (!userId) {
-        window.location.href = '/login.html';
+        window.location.href = '/auth.html';
         return false;
     }
     
@@ -20,7 +20,7 @@ function checkAuth() {
 function logout() {
     localStorage.removeItem('userId');
     localStorage.removeItem('username');
-    window.location.href = '/login.html';
+    window.location.href = '/auth.html';
 }
 
 function getHeaders() {
