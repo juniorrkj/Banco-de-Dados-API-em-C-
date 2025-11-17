@@ -149,7 +149,7 @@
 
         <div class="toggle-text">
             <span id="toggle-message">Não tem conta?</span>
-            <span class="toggle-link" onclick="toggleMode()">Criar uma</span>
+            <span class="toggle-link" id="toggle-link" onclick="toggleMode()">Criar uma</span>
         </div>
     </div>
 
@@ -174,15 +174,18 @@
             const subtitle = document.getElementById('subtitle');
             const submitBtn = document.getElementById('submit-btn');
             const toggleMessage = document.getElementById('toggle-message');
+            const toggleLink = document.getElementById('toggle-link');
 
             if (isLoginMode) {
                 subtitle.textContent = 'Faça login para continuar';
                 submitBtn.textContent = 'Entrar';
                 toggleMessage.textContent = 'Não tem conta?';
+                toggleLink.textContent = 'Criar uma';
             } else {
                 subtitle.textContent = 'Crie sua conta';
                 submitBtn.textContent = 'Cadastrar';
                 toggleMessage.textContent = 'Já tem conta?';
+                toggleLink.textContent = 'Fazer login';
             }
         }
 
