@@ -1,7 +1,7 @@
-// Use a URL da API do Railway se estiver em produção, senão usa localhost
+// Detectar URL da API automaticamente
 const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'http://localhost:5099/api/v1'
-    : 'https://sistema-estoque-api-web-production.up.railway.app/api/v1';
+    ? 'http://localhost:8080/api/v1'
+    : `${window.location.protocol}//${window.location.hostname}/api/v1`;
 
 // ============= UTILIDADES =============
 function formatCurrency(value) {
