@@ -96,16 +96,17 @@ public class Program
         }
 
         var webTask = app.RunAsync();
+        var isRailway = Environment.GetEnvironmentVariable("PORT") != null;
         Console.WriteLine("===================================");
-        Console.WriteLine("API online em http://localhost:5099");
-        Console.WriteLine("Swagger: http://localhost:5099/swagger");
-        Console.WriteLine("Interface Web (GUI): http://localhost:5099");
+        Console.WriteLine($"API online em {(isRailway ? "Railway" : "http://localhost:5099")}");
+        Console.WriteLine("Swagger: /swagger");
+        Console.WriteLine("Interface Web (GUI): /");
         Console.WriteLine("===================================");
 
-        // If WEBONLY=1 is set in the environment, skip the interactive console loop
-        if (Environment.GetEnvironmentVariable("WEBONLY") == "1")
+        // Se estiver no Railway (variável PORT existe) ou WEBONLY=1, não mostrar menu
+        if (isRailway || Environment.GetEnvironmentVariable("WEBONLY") == "1")
         {
-            Console.WriteLine("Running in WEBONLY mode — console menu disabled.");
+            Console.WriteLine("Running in web-only mode — console menu disabled.");
             await webTask;
             return;
         }
