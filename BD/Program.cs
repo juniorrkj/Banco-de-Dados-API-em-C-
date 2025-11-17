@@ -44,11 +44,11 @@ public class Program
             db.Database.Migrate();
         }
 
-        Console.WriteLine("===================================");
+        Console.WriteLine("====================================");
         Console.WriteLine($"🚀 API rodando na porta {port}");
         Console.WriteLine("📚 Swagger: /swagger");
         Console.WriteLine("🌐 Interface: /");
-        Console.WriteLine("===================================");
+        Console.WriteLine("====================================");
 
         app.Run();
     }
