@@ -109,6 +109,29 @@ public class AuthController : ControllerBase
         });
     }
 
+    // GET: api/v1/auth/admin/users?secret=SUA_SENHA_SECRETA
+    [HttpGet("admin/users")]
+    public async Task<ActionResult> GetAllUsersAdmin([FromQuery] string secret)
+    {
+        // Senha de administrador (mude para uma senha sua!)
+        if (secret != "admin2024")
+        {
+            return Unauthorized(new { error = "Acesso negado" });
+        }
+
+        var users = await _context.Users
+            .Select(u => new
+            {
+                u.Id,
+                u.Username,
+                ProductCount = u.Products.Count,
+                CategoryCount = u.Categories.Count
+            })
+            .ToListAsync();
+
+        return Ok(users);
+    }
+
     // Helper: Hash de senha usando SHA256
     private string HashPassword(string password)
     {
