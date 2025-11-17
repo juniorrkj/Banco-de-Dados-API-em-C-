@@ -16,5 +16,5 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app/BD/out .
 
-# Railway fornece PORT
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet EstoqueDB.dll
+# Railway fornece PORT automaticamente
+ENTRYPOINT ["sh", "-c", "ASPNETCORE_URLS=http://*:${PORT:-8080} dotnet EstoqueDB.dll"]
