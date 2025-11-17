@@ -15,10 +15,13 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app/BD/out .
+COPY start.sh .
+
+# Dar permissão de execução ao script
+RUN chmod +x start.sh
 
 # Expor porta para Railway
 EXPOSE 8080
-ENV ASPNETCORE_URLS=http://0.0.0.0:${PORT:-8080}
 
-# Railway fornece PORT automaticamente (configurado no Program.cs)
-CMD ["dotnet", "EstoqueDB.dll"]
+# Railway fornece PORT automaticamente
+CMD ["./start.sh"]
