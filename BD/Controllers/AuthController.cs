@@ -140,6 +140,31 @@ public class AuthController : ControllerBase
         });
     }
 
+    // POST: api/v1/auth/admin/reset-database
+    [HttpPost("admin/reset-database")]
+    public async Task<IActionResult> ResetDatabase([FromQuery] string secret)
+    {
+        var adminSecret = Environment.GetEnvironmentVariable("ADMIN_SECRET");
+        
+        if (string.IsNullOrEmpty(adminSecret) || secret != adminSecret)
+        {
+            return Unauthorized(new { error = "Acesso negado" });
+        }
+
+        try
+        {
+            // Deleta e recria o banco de dados
+            await _context.Database.EnsureDeletedAsync();
+            await _context.Database.EnsureCreatedAsync();
+            
+            return Ok(new { message = "Banco de dados resetado com sucesso!" });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = "Erro ao resetar banco de dados", details = ex.Message });
+        }
+    }
+
     // Helper: Hash de senha usando SHA256
     private string HashPassword(string password)
     {
